@@ -16,9 +16,19 @@ pipeline {
                 sh 'mvn test'
             }
         }
-        stage('Deliver') { 
+        stage('Deploy - Staging') {
             steps {
-                sh './jenkins/scripts/deliver.sh' 
+                sh './jenkins/scripts/deliver.sh'
+            }
+        }
+        stage('Sanity check') {
+            steps {
+                input "Does the staging environment look ok?"
+            }
+        }
+        stage('Deploy - Production') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
